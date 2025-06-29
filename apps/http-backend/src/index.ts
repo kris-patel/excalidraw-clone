@@ -6,7 +6,7 @@ import {CreateRoomSchema, CreateUserSchema, SigninSchema} from "@repo/common/typ
 
 const app = express()
 
-app.use();
+// app.use();
 
 app.post('/signin', (req, res) => {
     
