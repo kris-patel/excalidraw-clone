@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 export function middleware(req: Request, res: Response, next: NextFunction){
     const token = req.headers["authorization"] ?? "";
 
-    const decoded = jwt.verify(token, JWT_SECRET); 
+    const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
 
     if (decoded.userId) {
         req.userId  = decoded.userId;
