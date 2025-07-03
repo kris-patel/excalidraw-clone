@@ -5,12 +5,15 @@ import { middleware } from "./middleware";
 import {CreateRoomSchema, CreateUserSchema, SigninSchema} from "@repo/common/types";
 import {prismaClient} from "@repo/db/client";
 import bcrypt from "bcrypt";
+import cors from 'cors';
+
 
 const saltRounds = 10;
 
 const app = express()
 
 app.use(express.json());
+app.use(cors({origin: '*'}));
 
 app.post('/signin', async (req, res) => {
     
@@ -99,11 +102,6 @@ app.post('/room', middleware, async (req,res) => {
 
     const userId = req.userId;
     if (userId) {
-        // const user = prismaClient.user.findFirst({
-        //     where: {
-        //         id: userId
-        //     }
-        // })
 
         try{
             const room = await prismaClient.room.create({
@@ -141,6 +139,19 @@ app.get("/chats/:roomId", async (req, res) => {
 
     res.json({
         messages
+    })
+})
+
+app.get("/room/:slug", async (req, res) => {
+    const slug = req.params.slug;
+    const room = await prismaClient.room.findFirst({
+        where: {
+            slug
+        }
+    });
+
+    res.json({
+        room
     })
 })
 
